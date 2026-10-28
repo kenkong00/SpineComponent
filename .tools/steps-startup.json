@@ -1,0 +1,16 @@
+[
+  { "wait": 2500 },
+  { "eval": "fetch('/api/ping').then(r=>r.json()).then(d=>'ping app='+d.app+' pid='+d.pid)" },
+  { "eval": "fetch('/api/characters').then(r=>r.json()).then(d=>'chars='+d.characters.length)" },
+  { "click": "[data-tab=\"about\"]" },
+  { "wait": 600 },
+  { "eval": "(()=>{const t=document.querySelector('.abt-tbl'); if(!t) return 'NO-TABLE'; const rows=t.querySelectorAll('tr'); return 'abt-tbl rows='+rows.length+' width='+Math.round(t.getBoundingClientRect().width)+' firstCell='+t.querySelector('td').textContent.trim();})()" },
+  { "eval": "(()=>{const code=document.querySelector('.about code'); if(!code) return 'NO-CODE'; const s=getComputedStyle(code); return 'code bg='+s.backgroundColor+' bd='+s.borderTopWidth+' color='+s.color;})()" },
+  { "shot": "startup-about.png" },
+  { "click": "[data-tab=\"compose\"]" },
+  { "wait": 2500 },
+  { "eval": "(()=>{const e=document.getElementById('charSel'); e.value='j0003'; e.dispatchEvent(new Event('change')); return 'j0003';})()" },
+  { "wait": 2500 },
+  { "eval": "(()=>'parts='+Compose.S.parts.length+' layers='+document.querySelectorAll('#canvas .part').length)()" },
+  { "shot": "startup-compose.png" }
+]

@@ -1,0 +1,14 @@
+[
+  { "click": "#tabs .tabbtn[data-tab='actskin']" },
+  { "wait": 9000 },
+  { "eval": "(() => { const t = ActSkin.S.thumbs; const per = Object.keys(t).map(k => k + '=' + Object.keys(t[k]).length); return JSON.stringify({ skins: per, gameRowImgs: document.querySelectorAll('#akGame .th img').length, gameRows: document.querySelectorAll('#akGame .sk-g').length }); })()" },
+  { "shot": "32-actskin-game-thumbs.png" },
+  { "click": "#akGame .sk-g[data-slot='arm_left_Down'] .nm" },
+  { "wait": 400 },
+  { "eval": "(() => { const d = document.getElementById('akDetail'); return JSON.stringify({ optImgs: d.querySelectorAll('.sk-opt .im img').length, subs: [...d.querySelectorAll('.sk-opt .sub')].map(x => x.textContent) }); })()" },
+  { "shot": "33-actskin-detail-thumbs.png" },
+  { "click": "#akViewMatrix" },
+  { "wait": 400 },
+  { "eval": "document.querySelectorAll('#akMatrix .sk-row:not(.sk-head) .sk-cell img').length + ' matrix cell imgs / ' + document.querySelectorAll('#akMatrix .sk-row:not(.sk-head) .sk-cell').length + ' cells'" },
+  { "shot": "34-actskin-matrix-thumbs.png" }
+]

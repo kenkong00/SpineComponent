@@ -1,0 +1,85 @@
+{ "skeleton": { "images": "H:/【work】/浅浅的游戏UI界面设计原型/spine/psd/j0000/images/" },
+"PhotoshopToSpine": { "scale": 1, "padding": 1, "trim": true },
+"bones": [
+	{ "name": "root" }
+],
+"slots": [
+	{ "name": "arm_right_up", "bone": "root", "attachment": "arm_right_up" },
+	{ "name": "arm_right_down", "bone": "root", "attachment": "arm_right_down" },
+	{ "name": "hand_right", "bone": "root", "attachment": "hand_right" },
+	{ "name": "leg_right_UP", "bone": "root", "attachment": "leg_right_UP" },
+	{ "name": "leg_right_down", "bone": "root", "attachment": "leg_right_down" },
+	{ "name": "foot_right", "bone": "root", "attachment": "foot_right" },
+	{ "name": "body", "bone": "root", "attachment": "body" },
+	{ "name": "leg_left_UP", "bone": "root", "attachment": "leg_left_UP" },
+	{ "name": "leg_left_down", "bone": "root", "attachment": "leg_left_down" },
+	{ "name": "foot_left", "bone": "root", "attachment": "foot_left" },
+	{ "name": "arm_left_Up", "bone": "root", "attachment": "arm_left_Up" },
+	{ "name": "arm_left_Down", "bone": "root", "attachment": "arm_left_Down" },
+	{ "name": "hand_left", "bone": "root", "attachment": "hand_left" },
+	{ "name": "head", "bone": "root", "attachment": "head" },
+	{ "name": "eye_right", "bone": "root", "attachment": "eye_right" },
+	{ "name": "mouth", "bone": "root", "attachment": "mouth" },
+	{ "name": "eye_left", "bone": "root", "attachment": "eye_left" },
+	{ "name": "hair", "bone": "root", "attachment": "hair" }
+],
+"skins": {
+	"default": {
+		"arm_right_up": {
+			"arm_right_up": { "x": -20, "y": 232, "width": 44, "height": 82 }
+		},
+		"arm_right_down": {
+			"arm_right_down": { "x": -37, "y": 180, "width": 42, "height": 60 }
+		},
+		"hand_right": {
+			"hand_right": { "x": -56, "y": 147, "width": 52, "height": 40 }
+		},
+		"leg_right_UP": {
+			"leg_right_UP": { "x": -18, "y": 133.5, "width": 46, "height": 115 }
+		},
+		"leg_right_down": {
+			"leg_right_down": { "x": -6, "y": 59, "width": 44, "height": 84 }
+		},
+		"foot_right": {
+			"foot_right": { "x": -14.5, "y": 17.5, "width": 57, "height": 35 }
+		},
+		"body": {
+			"body": { "x": 11, "y": 234.5, "width": 84, "height": 143 }
+		},
+		"leg_left_UP": {
+			"leg_left_UP": { "x": 24, "y": 133.5, "width": 50, "height": 115 }
+		},
+		"leg_left_down": {
+			"leg_left_down": { "x": 37.5, "y": 59, "width": 45, "height": 84 }
+		},
+		"foot_left": {
+			"foot_left": { "x": 31.5, "y": 17.5, "width": 59, "height": 35 }
+		},
+		"arm_left_Up": {
+			"arm_left_Up": { "x": 50.5, "y": 232, "width": 43, "height": 80 }
+		},
+		"arm_left_Down": {
+			"arm_left_Down": { "x": 67, "y": 168, "width": 38, "height": 78 }
+		},
+		"hand_left": {
+			"hand_left": { "x": 85.5, "y": 141, "width": 51, "height": 48 }
+		},
+		"head": {
+			"head": { "x": 11, "y": 378, "width": 204, "height": 188 }
+		},
+		"eye_right": {
+			"eye_right": { "x": -64, "y": 374.5, "width": 38, "height": 53 }
+		},
+		"mouth": {
+			"mouth": { "x": -29.5, "y": 317, "width": 51, "height": 14 }
+		},
+		"eye_left": {
+			"eye_left": { "x": 2.5, "y": 374, "width": 41, "height": 54 }
+		},
+		"hair": {
+			"hair": { "x": -4.5, "y": 460.5, "width": 173, "height": 63 }
+		}
+	}
+},
+"animations": { "animation": {} }
+}

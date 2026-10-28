@@ -1,0 +1,14 @@
+{
+  "name": "spine-character-assembly",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Spine 人物装配工坊 — 把 PhotoshopToSpine 导出的拆件 JSON + images 在网页还原成人物，逐部件替换，并用官方 Spine 3.8 运行时预览动作",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "open": "node server.js --open"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

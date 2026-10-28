@@ -1,0 +1,12 @@
+{
+  "_comment": "AI 切分服务配置。photonRoot 指向 Photon Studio 根目录（里面有 .venv 与 models）。改成本机实际路径即可。",
+  "photonRoot": "H:\\【work】\\photon Studio",
+  "python": ".venv\\Scripts\\python.exe",
+  "spineCutter": "tools\\spine-cutter",
+  "poseModel": "models\\yolov8n-pose.pt",
+  "samCkpt": "models\\sam\\sam3.1_multiplex_fp16.safetensors",
+  "device": "cuda",
+  "resolution": 1008,
+  "threshold": 0.4,
+  "port": 5311
+}

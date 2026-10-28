@@ -1,0 +1,13 @@
+[
+  { "wait": 2200 },
+  { "click": "[data-tab=\"cutter\"]" },
+  { "wait": 800 },
+  { "eval": "(async()=>{\n  const blob = await fetch('/tmp_ai_test.png?v=2').then(r=>r.blob());\n  const dataUrl = await new Promise(res=>{const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.readAsDataURL(blob);});\n  window.Cutter.loadFromDataURL(dataUrl, 'ai_test');\n  await new Promise(r=>setTimeout(r,1800));\n  return '导入完成 parts='+window.CutterEngine.S.parts.length+' size='+window.CutterEngine.S.w+'x'+window.CutterEngine.S.h;\n})()" },
+  { "eval": "document.getElementById('cutAiPlan').value='body'; document.getElementById('cutAiRun').click(); 'AI 按钮已点击'" },
+  { "wait": 2500 },
+  { "eval": "'进度: '+document.getElementById('cutAiNote').textContent" },
+  { "wait": 25000 },
+  { "eval": "'结果: '+document.getElementById('cutAiNote').textContent+' | 部件数='+window.CutterEngine.S.parts.length" },
+  { "eval": "(()=>{ const ps=window.CutterEngine.orderedParts(); return ps.slice(0,16).map(p=>p.name+'('+Math.round(p.area)+')').join(', '); })()" },
+  { "shot": "ai-e2e-parts.png" }
+]

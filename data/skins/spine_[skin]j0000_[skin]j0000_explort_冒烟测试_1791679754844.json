@@ -1,0 +1,53 @@
+{
+  "id": "spine_[skin]j0000_[skin]j0000_explort_冒烟测试_1791679754844",
+  "name": "冒烟测试",
+  "modelId": "spine/[skin]j0000/[skin]j0000_explort",
+  "modelName": "[skin]j0000_explort",
+  "skinNames": [
+    "01",
+    "02",
+    "03"
+  ],
+  "choice": {
+    "arm_right_up": "02",
+    "arm_right_down": "02",
+    "hand_right": "01",
+    "leg_right_UP": "02",
+    "leg_right_down": "01",
+    "foot_right": "02",
+    "body": "03",
+    "leg_left_UP": "03",
+    "leg_left_down": "02",
+    "foot_left": "01",
+    "arm_left_Up": "01",
+    "arm_left_Down": "03",
+    "hand_left": "02",
+    "head": "02",
+    "eye_right": "01",
+    "mouth": "02",
+    "eye_left": "01",
+    "hair": "01"
+  },
+  "hidden": {
+    "arm_right_up": false,
+    "arm_right_down": false,
+    "hand_right": false,
+    "leg_right_UP": false,
+    "leg_right_down": false,
+    "foot_right": false,
+    "body": false,
+    "leg_left_UP": false,
+    "leg_left_down": false,
+    "foot_left": false,
+    "arm_left_Up": false,
+    "arm_left_Down": false,
+    "hand_left": false,
+    "head": false,
+    "eye_right": false,
+    "mouth": false,
+    "eye_left": false,
+    "hair": false
+  },
+  "createdAt": 1791679754844,
+  "updatedAt": 1791679754848
+}

@@ -1,0 +1,17 @@
+[
+  { "wait": 3000 },
+  { "eval": "(()=>{const e=document.getElementById('charSel'); e.value='j0003'; e.dispatchEvent(new Event('change')); return 'j0003';})()" },
+  { "wait": 3000 },
+  { "eval": "(()=>{ Compose.select(Compose.S.parts.findIndex(p=>p.slot==='hair')); const el=document.querySelector('#canvas .part.sel'); return 'outline='+(el?getComputedStyle(el).outlineStyle:'NO-EL'); })()" },
+  { "eval": "(()=>{ const on=[...document.querySelectorAll('.lyr:not(.hidden)')].length; return 'visibleLayers='+on+' errors='+(window.__e||0); })()" },
+  { "shot": "hero-compose.png" },
+  { "eval": "(()=>{ const e=document.getElementById('charSel'); e.value='pet0001'; e.dispatchEvent(new Event('change')); return 'x'; })()" },
+  { "wait": 2500 },
+  { "click": "[data-tab=\"anim\"]" },
+  { "wait": 4000 },
+  { "eval": "(()=>{const b=[...document.querySelectorAll('.act')].find(x=>x.textContent==='run'); if(b)b.click(); return 'run';})()" },
+  { "wait": 1500 },
+  { "shot": "hero-anim.png" },
+  { "eval": "fetch('/api/outfits').then(r=>r.json()).then(d=>'outfits='+d.outfits.length)" },
+  { "eval": "fetch('/api/parts').then(r=>r.json()).then(d=>'parts='+d.parts.length)" }
+]

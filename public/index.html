@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spine 人物装配工坊 · 拆件还原 + 换装</title>
+<link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+
+<header class="hdr">
+  <div class="logo"><b>🦴 Spine 人物装配工坊</b><small>拆件还原 · 部件替换 · 动作预览 · 皮肤混搭 · 网页切割出图</small></div>
+  <nav class="tabs" id="tabs">
+    <button class="tabbtn on" data-tab="compose">🧩 装配台</button>
+    <button class="tabbtn" data-tab="anim">🎬 动画台</button>
+    <button class="tabbtn" data-tab="cutter">✂️ 切割工坊</button>
+    <button class="tabbtn" data-tab="parts">📦 部件库</button>
+    <button class="tabbtn" data-tab="skin">🎨 切换演示</button>
+    <button class="tabbtn" data-tab="actskin">🎭 动画换装</button>
+    <button class="tabbtn" data-tab="about">❔ 说明</button>
+  </nav>
+  <div class="sp"></div>
+  <div class="grp">
+    <label>角色</label>
+    <select id="charSel" class="sel"></select>
+  </div>
+  <button class="btn ico" id="btnReload" title="重新扫描 spine/ 目录">↻</button>
+</header>
+
+<main class="main">
+
+<!-- ======================= 装配台 ======================= -->
+<section class="tab" id="tab-compose">
+
+  <!-- 左：部件图层 -->
+  <aside class="panel left">
+    <div class="p-h">
+      <span>🧩 部件图层</span><span class="sp"></span>
+      <span class="badge" id="partBadge">0</span>
+      <button class="btn sm" id="btnShowAll" title="全部显示">👁</button>
+      <button class="btn sm" id="btnHideAll" title="全部隐藏">🚫</button>
+      <button class="btn sm" id="btnResetAll" title="全部还原为原始部件">↺</button>
+    </div>
+    <div class="p-note" id="srcNote"></div>
+    <div class="filter-row">
+      <input class="inp" id="partSearch" placeholder="搜索部件…">
+      <label class="chk"><input type="checkbox" id="onlyActive"><span>只看显示中</span></label>
+    </div>
+    <div class="layers" id="layers"></div>
+    <div class="p-f" id="layerFoot"></div>
+  </aside>
+
+  <!-- 中：舞台 -->
+  <section class="stage-wrap">
+    <div class="stage-bar">
+      <span class="chip" id="stageInfo">—</span>
+      <span class="sp"></span>
+      <label class="lb">缩放</label>
+      <input type="range" id="zoom" min="20" max="300" value="100" class="rng">
+      <span class="val" id="zoomV">100%</span>
+      <button class="btn sm" id="btnFit" title="适应窗口">⤢ 适应</button>
+      <label class="lb">背景</label>
+      <select id="bgSel" class="sel sm">
+        <option value="checker">透明格</option>
+        <option value="dark">深色</option>
+        <option value="light">浅色</option>
+        <option value="grid">蓝图纸</option>
+        <option value="#7cc4ff">天蓝</option>
+        <option value="#b8e6b8">草绿</option>
+        <option value="#f3c9d6">粉</option>
+      </select>
+      <label class="chk"><input type="checkbox" id="chkOutline" checked><span>选中描边</span></label>
+    </div>
+
+    <div class="stage-scroll" id="stageScroll">
+      <div class="stage-center">
+        <div class="stage" id="stage">
+          <div class="canvas" id="canvas"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage-f">
+      <span id="statTxt" class="stat">就绪</span>
+      <span class="sp"></span>
+      <button class="btn sm" id="btnFlipAll" title="整体左右镜像">↔ 整体镜像</button>
+      <button class="btn sm" id="btnExportPng">🖼 导出 PNG</button>
+      <button class="btn sm" id="btnExportJson">⬇ 导出套装</button>
+      <button class="btn sm pri" id="btnSaveOutfit">💾 保存套装</button>
+    </div>
+  </section>
+
+  <!-- 右：属性 -->
+  <aside class="panel right">
+    <div class="p-h"><span id="propTitle">⚙ 部件属性</span><span class="sp"></span><span class="badge" id="propBadge">未选中</span></div>
+    <div id="propEmpty" class="empty">在左侧图层或舞台上点选一个部件</div>
+    <div id="propBody" class="prop-body hide">
+      <div class="thumb-row">
+        <div class="thumb"><img id="propThumb" alt=""></div>
+        <div class="thumb-meta" id="propMeta"></div>
+      </div>
+      <div class="fld-row">
+        <button class="btn sm pri block" id="btnReplace">⬆ 上传替换此部件</button>
+      </div>
+      <div class="fld-row">
+        <button class="btn sm block" id="btnUseLib">📦 从部件库选</button>
+        <button class="btn sm block" id="btnUseExtra">🗂 用自带备用图</button>
+      </div>
+      <div class="fld-row">
+        <button class="btn sm block warn" id="btnResetPart">↺ 还原此部件</button>
+      </div>
+
+      <div class="sec">位置 / 变换</div>
+      <div class="fld"><label>水平偏移</label><input type="range" id="pDx" min="-200" max="200" step="0.5" value="0"><span class="val" id="pDxV">0</span></div>
+      <div class="fld"><label>垂直偏移</label><input type="range" id="pDy" min="-200" max="200" step="0.5" value="0"><span class="val" id="pDyV">0</span></div>
+      <div class="fld"><label>横向缩放</label><input type="range" id="pSx" min="0.1" max="3" step="0.01" value="1"><span class="val" id="pSxV">1.00</span></div>
+      <div class="fld"><label>纵向缩放</label><input type="range" id="pSy" min="0.1" max="3" step="0.01" value="1"><span class="val" id="pSyV">1.00</span></div>
+      <div class="fld"><label>旋转</label><input type="range" id="pRot" min="-180" max="180" step="1" value="0"><span class="val" id="pRotV">0°</span></div>
+      <div class="fld"><label>层级</label>
+        <button class="btn sm" id="pUp">▲ 上移</button>
+        <button class="btn sm" id="pDown">▼ 下移</button>
+      </div>
+
+      <div class="sec">显示</div>
+      <div class="fld"><label>左右翻转</label><button class="btn sm tgl" id="pFlipX">↔ 翻转</button></div>
+      <div class="fld"><label>上下翻转</label><button class="btn sm tgl" id="pFlipY">↕ 翻转</button></div>
+      <div class="fld"><label>不透明度</label><input type="range" id="pOp" min="0" max="1" step="0.01" value="1"><span class="val" id="pOpV">1.00</span></div>
+      <div class="fld"><label>填充方式</label>
+        <select id="pFit" class="sel sm">
+          <option value="fill">拉伸铺满（对齐原框）</option>
+          <option value="contain">等比适应</option>
+          <option value="cover">等比裁切</option>
+        </select>
+      </div>
+      <div class="fld"><label>染色</label><input type="color" id="pTint" value="#ffffff"><button class="btn sm" id="pTintClear">清除</button></div>
+      <div class="fld"><label>颜色调整</label></div>
+      <div class="fld sub"><label>亮度</label><input type="range" id="pBri" min="0" max="2" step="0.01" value="1"><span class="val" id="pBriV">1.00</span></div>
+      <div class="fld sub"><label>饱和度</label><input type="range" id="pSat" min="0" max="3" step="0.01" value="1"><span class="val" id="pSatV">1.00</span></div>
+      <div class="fld sub"><label>色相</label><input type="range" id="pHue" min="-180" max="180" step="1" value="0"><span class="val" id="pHueV">0°</span></div>
+
+      <div class="sec">槽位对齐参考</div>
+      <div class="hint">原始占位框：<b id="propBox">—</b></div>
+    </div>
+  </aside>
+</section>
+
+<!-- ======================= 动画台 ======================= -->
+<section class="tab hide" id="tab-anim">
+  <aside class="panel left wide">
+    <div class="p-h"><span>🎬 导出版（Spine 3.8 运行时）</span><span class="sp"></span><button class="btn sm" id="btnAnimReload">↻</button></div>
+    <div class="p-note">来自 <code>spine/&lt;角色&gt;/export*/</code> 的 <b>.json + .atlas + .png</b>，用官方 Spine 3.8 运行时直接在网页播放。</div>
+    <div class="anim-list" id="animList"></div>
+    <div class="p-h sec-h"><span>动作</span></div>
+    <div class="actions" id="actionList"></div>
+    <div class="param" id="animParam"></div>
+  </aside>
+  <section class="stage-wrap">
+    <div class="stage-bar">
+      <button class="btn sm pri" id="btnPlay">▶ 播放</button>
+      <button class="btn sm" id="btnPlayLoop">🔁 循环</button>
+      <label class="lb">速度</label><input type="range" id="animSpeed" min="0.1" max="3" step="0.05" value="1" class="rng"><span class="val" id="animSpeedV">1.00×</span>
+      <span class="sp"></span>
+      <label class="chk"><input type="checkbox" id="chkDebug"><span>骨骼/网格线框</span></label>
+      <label class="lb">缩放</label><input type="range" id="animScale" min="0.1" max="3" step="0.05" value="1" class="rng"><span class="val" id="animScaleV">1.00×</span>
+      <label class="lb">背景</label>
+      <select id="animBg" class="sel sm">
+        <option value="#1b2030">深色</option><option value="#ffffff">白</option>
+        <option value="#d9dee8">浅灰</option><option value="#7cc4ff">天蓝</option>
+        <option value="#b8e6b8">草绿</option><option value="#f3c9d6">粉</option>
+      </select>
+      <button class="btn sm" id="btnShot">📸 截图</button>
+    </div>
+    <div class="player-host" id="playerHost"></div>
+    <div class="stage-f">
+      <span class="stat" id="animStat">选一个导出版 → 选一个动作</span>
+      <span class="sp"></span>
+      <span class="chip" id="animFileInfo"></span>
+    </div>
+  </section>
+</section>
+
+<!-- ======================= 部件库 ======================= -->
+<section class="tab hide" id="tab-parts">
+  <aside class="panel left">
+    <div class="p-h"><span>📦 部件库</span><span class="sp"></span><span class="badge" id="libBadge">0</span></div>
+    <div class="drop" id="dropZone">
+      <b>把 PNG 拖进来</b>
+      <span>或 <button class="btn sm" id="btnPickLib">选择文件</button>（可多选）</span>
+      <input type="file" id="fileLib" accept="image/*" multiple hidden>
+    </div>
+    <div class="p-note">上传后会自动抽取文件名关键词（head / hair / eye / mouth / body / arm / leg / cloth…）。装配台里选中部件后点「📦 从部件库选」即可套用。</div>
+    <div class="lib-grid" id="libGrid"></div>
+  </aside>
+  <section class="panel grow">
+    <div class="p-h"><span>🛠 批量导入到当前角色</span></div>
+    <div class="p-note">一次选多张图，系统按文件名自动匹配到同名槽位（大小写不敏感）；匹配不上的会列在下面等你手动指派。</div>
+    <div class="fld-row">
+      <button class="btn pri" id="btnBatch">⬆ 批量选择图片并自动归类</button>
+      <input type="file" id="fileBatch" accept="image/*" multiple hidden>
+      <button class="btn" id="btnBatchClear">清空待指派</button>
+    </div>
+    <div class="drop" id="dropBatch"><b>或把多张 PNG 拖到这里</b><span>自动按文件名归类</span></div>
+    <div class="assign-wrap">
+      <div class="assign-col">
+        <div class="sec">待指派图片</div>
+        <div class="pool" id="pool"></div>
+      </div>
+      <div class="assign-col">
+        <div class="sec">槽位（点一下把选中的图挂上去）</div>
+        <div class="slotlist" id="slotList"></div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ======================= 切换演示（皮肤 × 部位 自由混搭） ======================= -->
+<section class="tab hide" id="tab-skin">
+
+  <!-- 左：部位 × 皮肤 矩阵 -->
+  <aside class="panel sk-left">
+    <div class="p-h">
+      <span>🎨 皮肤模型</span><span class="sp"></span>
+      <button class="btn sm ico" id="skReload" title="重新扫描">↻</button>
+    </div>
+    <div class="filter-row">
+      <select id="skModel" class="sel" style="flex:1;min-width:0"></select>
+    </div>
+    <div class="p-note" id="skNote">—</div>
+    <div class="sk-quick" id="skQuick"></div>
+    <div class="sk-viewbar">
+      <button class="btn sm tgl" id="skViewGame" title="下拉 + 左右箭头逐部位切换，皮肤再多也好用">🎮 游戏式</button>
+      <button class="btn sm tgl" id="skViewMatrix" title="部位 × 皮肤 全览矩阵，适合少量皮肤">⊞ 矩阵</button>
+      <span class="hint">◀ ▶ 循环切换 · 下拉直选</span>
+    </div>
+    <div class="sk-mx hide" id="skGame"></div>
+    <div class="sk-mx" id="skMatrix"></div>
+    <div class="p-f" id="skFoot">
+      <button class="btn sm" id="skShowAll">👁 全部显示</button>
+      <span class="chip" id="skCover">—</span>
+    </div>
+  </aside>
+
+  <!-- 中：舞台 -->
+  <section class="stage-wrap">
+    <div class="stage-bar">
+      <button class="btn sm pri" id="skPlay">▶ 整套轮播</button>
+      <button class="btn sm" id="skRandom">🎲 随机混搭</button>
+      <button class="btn sm" id="skReset">↺ 重置</button>
+      <span class="sp"></span>
+      <label class="lb">缩放</label>
+      <input type="range" id="skZoom" min="20" max="300" value="100" class="rng">
+      <span class="val" id="skZoomV">100%</span>
+      <button class="btn sm" id="skFit" title="适应窗口">⤢ 适应</button>
+      <label class="lb">背景</label>
+      <select id="skBg" class="sel sm">
+        <option value="checker">透明格</option>
+        <option value="dark">深色</option>
+        <option value="light">浅色</option>
+        <option value="grid">蓝图纸</option>
+        <option value="#7cc4ff">天蓝</option>
+        <option value="#b8e6b8">草绿</option>
+        <option value="#f3c9d6">粉</option>
+      </select>
+      <button class="btn sm" id="skPng">🖼 导出 PNG</button>
+    </div>
+
+    <div class="stage-scroll" id="skScroll">
+      <div class="stage-center">
+        <div class="stage" id="skStage">
+          <div class="canvas" id="skCanvas"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage-f">
+      <span class="stat" id="skStat">就绪</span>
+      <span class="sp"></span>
+      <label class="lb">新皮肤名</label>
+      <input class="inp" id="skMixName" value="mix" style="width:96px">
+      <button class="btn sm pri" id="skMerge">⬇ 导出合并皮肤 JSON</button>
+      <button class="btn sm" id="skSave">💾 保存混搭</button>
+      <button class="btn sm" id="skList">📂 混搭库</button>
+    </div>
+  </section>
+
+  <!-- 右：部位详情 -->
+  <aside class="panel sk-right">
+    <div class="p-h"><span>🔍 部位详情</span><span class="sp"></span><span class="badge" id="skBadge">—</span></div>
+    <div class="p-b" id="skDetail"></div>
+  </aside>
+</section>
+
+<!-- ======================= 🎭 动画换装（带骨骼、会动的角色，逐部位混搭皮肤） ======================= -->
+<section class="tab hide" id="tab-actskin">
+
+  <!-- 左：模型 + 部位选择 -->
+  <aside class="panel sk-left">
+    <div class="p-h">
+      <span>🎭 动画换装</span><span class="sp"></span>
+      <button class="btn sm ico" id="akReload" title="重新扫描">↻</button>
+    </div>
+    <div class="filter-row">
+      <select id="akModel" class="sel" style="flex:1;min-width:0"></select>
+    </div>
+    <div class="p-note" id="akNote">—</div>
+    <div class="sk-quick" id="akQuick"></div>
+    <div class="sk-viewbar">
+      <button class="btn sm tgl" id="akViewGame" title="下拉 + 左右箭头逐部位切换">🎮 游戏式</button>
+      <button class="btn sm tgl" id="akViewMatrix" title="部位 × 皮肤 全览矩阵">⊞ 矩阵</button>
+      <span class="hint">◀ ▶ 循环切换</span>
+    </div>
+    <div class="sk-mx hide" id="akGame"></div>
+    <div class="sk-mx" id="akMatrix"></div>
+    <div class="p-f" id="akFoot">
+      <button class="btn sm" id="akShowAll">👁 全部显示</button>
+      <span class="chip" id="akCover">—</span>
+    </div>
+  </aside>
+
+  <!-- 中：Spine 运行时舞台 -->
+  <section class="stage-wrap">
+    <div class="stage-bar">
+      <button class="btn sm pri" id="akPlay">⏸ 暂停</button>
+      <button class="btn sm on" id="akLoop">🔁 循环</button>
+      <label class="lb">动作</label>
+      <select id="akAnim" class="sel sm"></select>
+      <label class="lb">速度</label>
+      <input type="range" id="akSpeed" min="0.1" max="2" step="0.05" value="1" class="rng">
+      <span class="val" id="akSpeedV">1.00×</span>
+      <span class="sp"></span>
+      <label class="lb">背景</label>
+      <select id="akBg" class="sel sm">
+        <option value="checker" selected>透明格</option>
+        <option value="#1b2030">深空</option>
+        <option value="#2a2f45">暗紫</option>
+        <option value="#7cc4ff">天蓝</option>
+        <option value="#b8e6b8">草绿</option>
+        <option value="#f3c9d6">粉</option>
+      </select>
+      <label class="lb">缩放</label>
+      <input type="range" id="akZoom" min="0.4" max="3" step="0.05" value="1" class="rng" title="也可以在画面上滚轮缩放">
+      <span class="val" id="akZoomV">1.00×</span>
+      <button class="btn sm" id="akReset">↺ 重置</button>
+      <button class="btn sm" id="akRandom">🎲 随机</button>
+      <button class="btn sm" id="akShot">🖼 截图</button>
+    </div>
+
+    <div class="stage-scroll" id="akScroll">
+      <!-- 绝对定位铺满滚动区：Spine 播放器的 canvas 依赖父链有确定高度 -->
+      <div class="stage" id="akPlayerHost" style="position:absolute;left:10px;right:10px;top:10px;bottom:10px"></div>
+    </div>
+
+    <div class="stage-f">
+      <span class="stat" id="akStat">就绪</span>
+      <span class="sp"></span>
+      <button class="btn sm" id="akSave">💾 保存换装</button>
+      <button class="btn sm" id="akList">📂 换装库</button>
+    </div>
+  </section>
+
+  <!-- 右：部位详情 -->
+  <aside class="panel sk-right">
+    <div class="p-h"><span>🔍 部位详情</span><span class="sp"></span><span class="badge" id="akBadge">—</span></div>
+    <div class="p-b" id="akDetail"></div>
+  </aside>
+</section>
+
+<!-- ======================= 切割工坊 ======================= -->
+<section class="tab hide" id="tab-cutter">
+
+  <!-- 左：部件列表 -->
+  <aside class="panel left">
+    <div class="p-h">
+      <span>✂️ 部件</span><span class="sp"></span>
+      <span class="badge" id="cutBadge">0</span>
+      <button class="btn sm" id="cutSortY" title="按位置排序（从上到下）">⇅ 排序</button>
+      <button class="btn sm" id="cutSplit" title="把选中部件按连通块拆开">⧉ 拆分</button>
+      <button class="btn sm" id="cutMerge" title="合并选中的部件">⊕ 合并</button>
+      <button class="btn sm" id="cutDel" title="删除选中部件">🗑</button>
+    </div>
+    <div class="p-note" id="cutNote">先导入一张图</div>
+    <div class="cut-list" id="cutList"></div>
+    <div class="p-f" id="cutFoot"></div>
+  </aside>
+
+  <!-- 中：画布 -->
+  <section class="stage-wrap">
+    <div class="stage-bar">
+      <span class="chip" id="cutInfo">—</span>
+      <span class="sp"></span>
+      <label class="lb">显示</label>
+      <select id="cutView" class="sel sm">
+        <option value="both">原图 + 分区染色</option>
+        <option value="mask">仅分区染色</option>
+        <option value="src">仅原图</option>
+      </select>
+      <label class="chk"><input type="checkbox" id="cutShowSel" checked><span>选区</span></label>
+      <label class="lb">缩放</label>
+      <input type="range" id="cutZoom" min="10" max="600" value="100" class="rng">
+      <span class="val" id="cutZoomV">100%</span>
+      <button class="btn sm" id="cutFit" title="适应窗口">⤢ 适应</button>
+    </div>
+    <div class="stage-scroll" id="cutScroll">
+      <div class="stage-center">
+        <div class="stage" id="cutStage">
+          <canvas id="cutCanvas"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="stage-bar" id="cutHint">提示：导入图片后，先用右侧「自动切分」分块，再用工具修边。</div>
+  </section>
+
+  <!-- 右：工具箱 + 导出 -->
+  <aside class="panel right">
+    <div class="p-h"><span>🧰 工具箱</span></div>
+    <div class="p-b" id="cutScroll2">
+
+      <!-- 导入 -->
+      <div class="blk">
+        <div class="blk-h">1 · 导入图片</div>
+        <div class="drop" id="cutDrop">
+          <p>拖入图片，或</p>
+          <button class="btn pri" id="cutPick">选择文件</button>
+          <input type="file" id="cutFile" accept="image/*" hidden>
+          <p class="hint">支持 PNG / JPG。透明背景的立绘切分效果最好。</p>
+        </div>
+      </div>
+
+      <!-- 自动切分 -->
+      <div class="blk">
+        <div class="blk-h">2 · 自动切分</div>
+        <div class="fld-row">
+          <label>策略</label>
+          <select id="cutStrategy" class="sel">
+            <option value="alpha">透明区域（推荐）</option>
+            <option value="bgcolor">背景色去除</option>
+            <option value="grid">网格均分</option>
+          </select>
+        </div>
+        <div id="cutParams"></div>
+        <button class="btn pri wide" id="cutRun">▶ 执行切分</button>
+        <p class="hint" id="cutRunNote">—</p>
+      </div>
+
+      <!-- AI 智能识别 -->
+      <div class="blk">
+        <div class="blk-h">2.5 · AI 智能识别 <span class="badge" id="cutAiBadge">SAM3</span></div>
+        <div class="fld-row"><label>方案</label>
+          <select id="cutAiPlan" class="sel">
+            <option value="body">人物部件（15 类·分左右）</option>
+            <option value="body_cloth">人物 + 服装（19 类）</option>
+            <option value="custom">自定义提示词</option>
+          </select>
+        </div>
+        <div class="fld-row" id="cutAiCustomRow" style="display:none">
+          <label>提示词</label>
+          <input class="inp" id="cutAiCustom" placeholder="英文逗号分隔，如 hat,dress" maxlength="200">
+        </div>
+        <div class="fld-row"><label>置信度</label>
+          <input type="range" id="cutAiThr" min="15" max="80" value="35" class="rng"><span class="val" id="cutAiThrV">35</span>
+        </div>
+        <button class="btn pri wide" id="cutAiRun">🧠 AI 智能切分</button>
+        <p class="hint" id="cutAiNote">YOLO 定位 + SAM 3.1 抠图，替换全部当前部件。首次启动需加载模型约 30 秒，之后每次只要几秒。</p>
+      </div>
+
+      <!-- 手动工具 -->
+      <div class="blk">
+        <div class="blk-h">3 · 手动修边</div>
+        <div class="tool-grid" id="cutTools">
+          <button class="tbtn" data-tool="wand">🪄 魔棒</button>
+          <button class="tbtn" data-tool="rect">▭ 矩形</button>
+          <button class="tbtn" data-tool="ellipse">◯ 椭圆</button>
+          <button class="tbtn" data-tool="lasso">✎ 套索</button>
+          <button class="tbtn" data-tool="brush">🖌 补回</button>
+          <button class="tbtn" data-tool="eraser">🧽 擦除</button>
+        </div>
+        <div class="fld-row"><label>容差</label>
+          <input type="range" id="cutTol" min="0" max="120" value="32" class="rng"><span class="val" id="cutTolV">32</span>
+        </div>
+        <div class="fld-row"><label>笔刷</label>
+          <input type="range" id="cutBrush" min="1" max="80" value="12" class="rng"><span class="val" id="cutBrushV">12</span>
+        </div>
+        <div class="fld-row"><label>选区</label>
+          <div class="seg" id="cutSelMode">
+            <button class="on" data-mode="new">新建</button>
+            <button data-mode="add">加</button>
+            <button data-mode="sub">减</button>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn sm" id="cutSelAll">全选</button>
+          <button class="btn sm" id="cutSelInv">反选</button>
+          <button class="btn sm" id="cutSelClear">清空</button>
+        </div>
+        <div class="btn-row">
+          <button class="btn sm pri" id="cutToPart">存为新部件</button>
+          <button class="btn sm" id="cutPartAdd">加到部件</button>
+          <button class="btn sm" id="cutPartSub">从部件删</button>
+        </div>
+        <div class="fld-row"><label>羽化</label>
+          <input type="range" id="cutFeather" min="0" max="20" value="0" class="rng"><span class="val" id="cutFeatherV">0</span>
+        </div>
+        <div class="btn-row">
+          <button class="btn sm" id="cutGrow">扩展+2</button>
+          <button class="btn sm" id="cutShrink">收缩-2</button>
+          <button class="btn sm" id="cutSmooth">平滑</button>
+        </div>
+        <p class="hint">画笔/橡皮直接作用在<b>当前选中部件</b>上；其余工具生成选区。</p>
+      </div>
+
+      <!-- 导出 -->
+      <div class="blk">
+        <div class="blk-h">4 · 导出到 Spine</div>
+        <div class="fld-row"><label>角色 ID</label>
+          <input class="inp" id="cutCharId" placeholder="例如 my_char_01" maxlength="40">
+        </div>
+        <div class="fld-row"><label>留白</label>
+          <input type="range" id="cutPad" min="0" max="8" value="1" class="rng"><span class="val" id="cutPadV">1</span>
+        </div>
+        <label class="chk"><input type="checkbox" id="cutTrim" checked><span>裁剪到内容边界（trim）</span></label>
+        <label class="chk"><input type="checkbox" id="cutOverwrite"><span>允许覆盖同名角色</span></label>
+        <button class="btn pri wide" id="cutExport">💾 导出 images + JSON</button>
+        <p class="hint" id="cutExportNote">导出后写入 <code>spine/&lt;角色ID&gt;/</code>，装配台刷新即可使用。</p>
+      </div>
+
+    </div>
+  </aside>
+</section>
+
+<!-- ======================= 说明 ======================= -->
+<section class="tab hide" id="tab-about">
+  <div class="about">
+    <h2>这个系统干了什么</h2>
+    <ol>
+      <li><b>拆件还原</b>：读取 <code>spine/&lt;角色&gt;/&lt;角色&gt;.json</code>（PhotoshopToSpine 导出的源文件）+ <code>images/</code> 里那一堆散图，按 JSON 里每个槽位的 <code>x / y / width / height</code> 把部件逐层叠回去 —— 和「把 JSON 拖进 Spine 还原」是同一个结果，只是这里直接在网页上画出来。</li>
+      <li><b>部件分离</b>：还原出来的每个部件都是一个独立的可点选对象。点它 → 右侧上传你自己的 PNG 就能替换，原部件随时 ↺ 还原。</li>
+      <li><b>备用/变体部件</b>：源文件里 <code>slots</code> 没写 <code>attachment</code> 的槽位（侧身、闭眼、换嘴、换眼等）在 Spine 里默认不显示，这里被识别成「备用/变体」，一眼点开就能换上，等于白送一套表情/朝向。</li>
+      <li><b>动作预览</b>：<code>export*/</code> 里的 json+atlas+png 用官方 Spine 3.8 运行时在网页播放，可切动作、调速、看骨骼线框、截图。</li>
+      <li><b>套装</b>：所有替换/变换都能存成套装（JSON），随时读回来。</li>
+    </ol>
+    <h3>坐标是怎么对齐的</h3>
+    <p>源 JSON 里 <code>x,y</code> 是部件中心在 Spine 坐标（Y 向上）中的位置，<code>width,height</code> 是占位框。网页用 Y 轴翻转把中心对齐，所以 <code>left = x - w/2</code>、<code>top = (canvasBottom - (y + h/2))</code>。换上去的图默认会被拉伸到原占位框大小，所以位置天然对得上；也可以用「等比适应 / 等比裁切」。</p>
+    <h3>工作流建议</h3>
+    <p>PS 里做<b>模板化人物</b>（图层分开、命名规范）→ 用 Spine 的 PSD 导入生成 JSON → 丢进 <code>spine/</code> 目录 → 刷新（右上角 ↻）→ 在这里装配、换部件、存套装。</p>
+
+    <h3>切割工坊：不装 PS 也能出 Spine 资源</h3>
+    <p>第三个流水线：把<b>一张图</b>变成<b>一套 Spine 资源</b>，全程在网页里完成。</p>
+    <ol>
+      <li><b>导入</b>：拖入 PNG / JPG。会自动检测背景类型（透明 / 不透明）并预选切分策略。</li>
+      <li><b>自动切分</b>：
+        <table class="abt-tbl">
+          <tr><td>透明区域</td><td>按 alpha 通道做<b>连通域标记</b>，一次扫出所有互不相连的区域，再按最小面积过滤碎屑。透明背景的立绘效果最好。</td></tr>
+          <tr><td>背景色去除</td><td>从四边取样背景色 → 容差泛洪去背 → 再做连通域切分。适合白底图、纯色底图。</td></tr>
+          <tr><td>网格均分</td><td>按行列等分，跳过空格子。适合帧序列、精灵表。</td></tr>
+        </table>
+      </li>
+      <li><b>手动修边</b>：魔棒（容差泛洪）、矩形、椭圆、套索生成选区，再「存为新部件 / 加到部件 / 从部件删」；画笔与橡皮直接涂抹在<b>当前部件</b>上补回或擦掉像素。另有羽化、扩展、收缩、平滑、反选。</li>
+      <li><b>整理</b>：自动按位置从上到下重排并命名 <code>part_01…</code>（也可双击改名，支持中文）；可合并、按连通块拆分、删除、隐藏。</li>
+      <li><b>导出</b>：生成 <code>spine/&lt;角色ID&gt;/images/*.png</code> 与 <code>&lt;角色ID&gt;.json</code>（PhotoshopToSpine 格式，可直接被 Spine 的「导入数据」读取），落盘后自动刷新装配台。</li>
+    </ol>
+    <p><b>坐标怎么来的</b>：原图左上原点、Y 向下；导出时转成 Spine 的「原点在左下、Y 向上」—— <code>x = 左边界 + 宽/2</code>，<code>y = 图高 − (上边界 + 高/2)</code>。装配台用的是相对包围盒，所以拖进 Spine 后部件间的相对位置与网页一致。</p>
+    <p><b>必须知道的限制</b>：自动切分靠「像素是否相连」判断，所以<b>互相接触或重叠的部件会被当成一块</b>（比如手贴在身体上）。这时用魔法棒/套索/橡皮手动分开，或改用下面的 AI 智能识别。</p>
+    <h3>AI 智能识别（SAM 3.1 + YOLOv8-pose）</h3>
+    <p>调用你硬盘里 Photon Studio 的本地模型：<b>YOLOv8-pose</b> 先定位人体 17 关键点，再对每个部件给「文本提示 + 几何框提示」，<b>SAM 3.1</b>（1.7GB 权重）语义级抠出头/发/躯干/四肢——左右手、大小臂都分得开，接触重叠的部件不再是问题。</p>
+    <table class="abt-tbl">
+      <tr><td>首次点击</td><td>自动拉起 AI 服务（端口 5311）并加载模型，约 30 秒；<b>模型常驻</b>，之后每次推理只要几秒。</td></tr>
+      <tr><td>方案</td><td>人物部件 15 类（含左右）／人物 + 服装 19 类／自定义英文提示词。</td></tr>
+      <tr><td>配置</td><td><code>ai/config.json</code>：Photon Studio 路径、模型路径、设备（cuda/cpu）、端口。</td></tr>
+      <tr><td>停止 AI</td><td>点这里 <button class="btn sm" id="btnAiStop" style="vertical-align:middle">停止 AI 服务</button>，或任务管理器结束对应的 <code>python.exe</code>。关掉工坊本身不影响 AI 服务（保持热着，下次秒用）。</td></tr>
+    </table>
+
+    <h3>切换演示：把「整套皮肤」拆成「逐部件换装」</h3>
+    <p>PSD 用 Spine 的「皮肤」模式导出时，JSON 的 <code>skins</code> 里会并列好几套皮肤（<code>01 / 02 / 03 …</code>），
+      每套皮肤各自给每个槽位(slot)一份附件(attachment)。Spine 里只能 <code>setSkin</code> <b>整套</b>切换，
+      这里把「皮肤 × 部位」展开成一张矩阵，<b>每个部位都能单独挑一套皮肤里的图</b> —— 头用 02、身体用 01、手用 03，
+      任意组合，这就是完整的换装系统。</p>
+    <ol>
+      <li><b>自动识别</b>：左边挑模型 → 中间舞台出图，左边矩阵每行是一个部位、每列是一套皮肤，格子就是这个部位在该皮肤下的图。</li>
+      <li><b>三种切法</b>：点单个格子 = 换这一个部位；点上方「整套 01 / 02 / 03」= 整套切换；<code>▶ 整套轮播</code> 自动循环播放，用来做切换演示。</li>
+      <li><b>留空 / 隐藏</b>：右侧详情里可以选 <code>∅ 留空</code>（这个部位不挂附件），或把整个部位隐藏起来。</li>
+      <li><b>混搭结果回灌 Spine</b>：点「⬇ 导出合并皮肤 JSON」会把当前逐部位的选择合并成<b>一个全新的 skin</b> 写进 JSON —— 原 JSON 里的其他皮肤不动，新皮肤（默认还会同时写成 <code>default</code>）能被 Spine 的「导入数据」直接读，导进编辑器就是混搭后的样子。</li>
+      <li><b>混搭库</b>：保存/读回只存「部位 → 皮肤」这张对照表，不含图片，素材还在就一直有效。</li>
+    </ol>
+    <table class="abt-tbl">
+      <tr><td>素材怎么放</td><td>JSON 与图片目录放进 <code>spine/&lt;任意目录&gt;/</code>（例如 <code>spine/[skin]j0000/</code> 里放 JSON + <code>[skin]images/01|02|03/</code>）。图片放在哪层子目录都能认：附件名 <code>"02/head"</code> 会按「精确路径 → 皮肤名目录 → 同名文件」依次去找。</td></tr>
+      <tr><td>识别规则</td><td><code>skins</code> 是对象且「皮肤数 &gt; 1 或没有 default」= 皮肤型模型，会在「皮肤模型」下拉里列出来；单套 <code>default</code> 的普通源 JSON 仍是装配台的活儿。</td></tr>
+      <tr><td>坐标</td><td>每个部位用自己的 <code>x / y / width / height</code> 摆；画布包围盒取<b>所有皮肤所有部位的并集</b>，所以切换皮肤时画面不会跳。</td></tr>
+      <tr><td>缺部位怎么办</td><td>某套皮肤没给这个槽位 → 矩阵里那格显示 <code>—</code>、点不动，整套切换时该部位保持不变（Spine 里也一样，缺的槽位会回落到 default 皮肤）。</td></tr>
+    </table>
+
+    <h3>启动与排错</h3>
+    <table class="abt-tbl">
+      <tr><td><code>启动.bat</code></td><td>正常入口。<b>重复双击不会报错</b> —— 检测到服务已经在跑，就直接打开浏览器；没在跑就启动它。<b>关掉黑窗口 = 停止服务。</b></td></tr>
+      <tr><td><code>重启.bat</code></td><td>强制重启：先结束旧的实例再起新的。改了 <code>server.js</code>、或旧实例卡死时用。</td></tr>
+      <tr><td><code>node launcher.js --status</code></td><td>只看状态（运行中 / 未运行），不启动。</td></tr>
+      <tr><td><code>node launcher.js --port=5311</code></td><td>端口被别的软件占用时换端口。也可以改 <code>启动.bat</code> 里的 <code>set "PORT=5310"</code>。</td></tr>
+    </table>
+    <p>服务会暴露一个探针接口 <code>/api/ping</code>，启动器靠它判断「端口上的到底是不是本工坊」，因此不会发生误杀其它程序的情况。</p>
+  </div>
+</section>
+
+</main>
+
+<!-- 弹窗：部件库选择器 -->
+<div class="mask hide" id="libMask">
+  <div class="dlg">
+    <div class="dlg-h">📦 从部件库选择 <span class="dlg-sub" id="libPickHint"></span></div>
+    <div class="dlg-b"><div class="lib-grid" id="libPickGrid"></div></div>
+    <div class="dlg-f"><button class="btn" id="libPickCancel">取消</button></div>
+  </div>
+</div>
+
+<!-- 弹窗：备用图选择 -->
+<div class="mask hide" id="extraMask">
+  <div class="dlg">
+    <div class="dlg-h">🗂 该角色自带的备用图</div>
+    <div class="dlg-b"><div class="lib-grid" id="extraGrid"></div></div>
+    <div class="dlg-f"><button class="btn" id="extraCancel">取消</button></div>
+  </div>
+</div>
+
+<!-- 弹窗：保存套装 -->
+<div class="mask hide" id="saveMask">
+  <div class="dlg narrow">
+    <div class="dlg-h">💾 保存套装</div>
+    <div class="dlg-b">
+      <div class="fld-row"><label>名称</label><input class="inp" id="outfitName" maxlength="40" placeholder="例如：蓝衣短发少女"></div>
+      <div class="fld-row"><label>说明</label><input class="inp" id="outfitNote" maxlength="80" placeholder="可选"></div>
+      <div class="hint" id="saveHint"></div>
+    </div>
+    <div class="dlg-f"><button class="btn" id="saveCancel">取消</button><button class="btn pri" id="saveOk">保存</button></div>
+  </div>
+</div>
+
+<!-- 弹窗：套装列表 -->
+<div class="mask hide" id="outfitMask">
+  <div class="dlg">
+    <div class="dlg-h">📂 套装库</div>
+    <div class="dlg-b"><div id="outfitList" class="outfit-list"></div></div>
+    <div class="dlg-f"><button class="btn" id="outfitCancel">关闭</button></div>
+  </div>
+</div>
+
+<!-- 弹窗：保存混搭 -->
+<div class="mask hide" id="skSaveMask">
+  <div class="dlg narrow">
+    <div class="dlg-h">💾 保存当前混搭</div>
+    <div class="dlg-b">
+      <div class="fld-row"><label>名称</label><input class="inp" id="skSaveName" maxlength="40" placeholder="例如：01身+02头"></div>
+      <div class="hint" id="skSaveHint"></div>
+    </div>
+    <div class="dlg-f"><button class="btn" id="skSaveCancel">取消</button><button class="btn pri" id="skSaveOk">保存</button></div>
+  </div>
+</div>
+
+<!-- 弹窗：混搭库 -->
+<div class="mask hide" id="skListMask">
+  <div class="dlg">
+    <div class="dlg-h">📂 混搭库</div>
+    <div class="dlg-b"><div id="skPresetList" class="outfit-list"></div></div>
+    <div class="dlg-f"><button class="btn" id="skListCancel">关闭</button></div>
+  </div>
+</div>
+
+<!-- 弹窗：动画换装 · 保存 -->
+<div class="mask hide" id="akSaveMask">
+  <div class="dlg narrow">
+    <div class="dlg-h">💾 保存当前换装</div>
+    <div class="dlg-b">
+      <div class="fld-row"><label>名称</label><input class="inp" id="akSaveName" maxlength="40" placeholder="例如：01身+02头"></div>
+      <div class="hint" id="akSaveHint"></div>
+    </div>
+    <div class="dlg-f"><button class="btn" id="akSaveCancel">取消</button><button class="btn pri" id="akSaveOk">保存</button></div>
+  </div>
+</div>
+
+<!-- 弹窗：动画换装 · 换装库 -->
+<div class="mask hide" id="akListMask">
+  <div class="dlg">
+    <div class="dlg-h">📂 换装库</div>
+    <div class="dlg-b"><div id="akPresetList" class="outfit-list"></div></div>
+    <div class="dlg-f"><button class="btn" id="akListCancel">关闭</button></div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="/vendor/spine-player.js"></script>
+<script src="/public/js/api.js"></script>
+<script src="/public/js/render.js"></script>
+<script src="/public/js/cutter-mask.js"></script>
+<script src="/public/js/cutter-engine.js"></script>
+<script src="/public/js/cutter.js"></script>
+<script src="/public/js/compose.js"></script>
+<script src="/public/js/anim.js"></script>
+<script src="/public/js/parts.js"></script>
+<script src="/public/js/skin.js"></script>
+<script src="/public/js/actskin.js"></script>
+<script src="/public/js/app.js"></script>
+</body>
+</html>

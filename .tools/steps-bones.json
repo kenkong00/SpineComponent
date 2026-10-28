@@ -1,0 +1,15 @@
+[
+  { "wait": 2500 },
+  { "eval": "(()=>{const e=document.getElementById('charSel'); e.value='pet0001'; e.dispatchEvent(new Event('change')); return 'pet0001';})()" },
+  { "wait": 2500 },
+  { "click": "[data-tab=\"anim\"]" },
+  { "wait": 4000 },
+  { "click": "#chkDebug" },
+  { "wait": 1800 },
+  { "eval": "(()=>{const r=Anim.S.player&&Anim.S.player.sceneRenderer; return JSON.stringify({hasR:!!r, drawBones:r&&r.drawBones, drawMesh:r&&r.drawMeshTriangles});})()" },
+  { "shot": "26-anim-bones.png" },
+  { "click": "#chkDebug" },
+  { "wait": 1200 },
+  { "eval": "(()=>{const r=Anim.S.player&&Anim.S.player.sceneRenderer; return 'off -> drawBones='+(r&&r.drawBones);})()" },
+  { "shot": "27-anim-clean.png" }
+]

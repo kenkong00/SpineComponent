@@ -1,0 +1,22 @@
+[
+  { "eval": "window.__err=[]; window.addEventListener('error',e=>window.__err.push(String(e.message))); 'hooked'" },
+  { "wait": 3000 },
+  { "click": ".tabbtn[data-tab=\"compose\"]" },
+  { "wait": 1200 },
+  { "eval": "JSON.stringify({ tab:'compose', parts: document.querySelectorAll('#canvas .part').length, err: window.__err })" },
+  { "click": ".tabbtn[data-tab=\"anim\"]" },
+  { "wait": 1500 },
+  { "eval": "JSON.stringify({ tab:'anim', exports: document.querySelectorAll('#animList .anim-item').length, err: window.__err })" },
+  { "click": ".tabbtn[data-tab=\"cutter\"]" },
+  { "wait": 1200 },
+  { "eval": "JSON.stringify({ tab:'cutter', cutCanvas: !!document.getElementById('cutCanvas'), err: window.__err })" },
+  { "click": ".tabbtn[data-tab=\"parts\"]" },
+  { "wait": 1200 },
+  { "eval": "JSON.stringify({ tab:'parts', badge: document.getElementById('libBadge').textContent, err: window.__err })" },
+  { "click": ".tabbtn[data-tab=\"skin\"]" },
+  { "wait": 1800 },
+  { "eval": "JSON.stringify({ tab:'skin', parts: document.querySelectorAll('#skCanvas .part').length, err: window.__err })" },
+  { "click": ".tabbtn[data-tab=\"about\"]" },
+  { "wait": 800 },
+  { "eval": "JSON.stringify({ tab:'about', err: window.__err })" }
+]

@@ -1,0 +1,8 @@
+[
+  { "wait": 2600 },
+  { "eval": "JSON.stringify([...document.querySelectorAll('select.sel')].map(s=>{const c=getComputedStyle(s);return {id:s.id,padding:c.padding,bg:c.backgroundColor,border:c.borderWidth+' '+c.borderStyle,radius:c.borderRadius}}))" },
+  { "click": ".tabbtn[data-tab=\"cutter\"]" },
+  { "wait": 1600 },
+  { "eval": "new Promise(r=>{const a=getComputedStyle(document.getElementById('cutView'));const b=getComputedStyle(document.getElementById('cutStrategy'));r(JSON.stringify({cutView:{padding:a.padding,bg:a.backgroundColor,border:a.borderWidth+' '+a.borderStyle},cutStrategy:{padding:b.padding,bg:b.backgroundColor,border:b.borderWidth+' '+b.borderStyle}}));})" },
+  { "shot": "fix-03-cutter.png" }
+]

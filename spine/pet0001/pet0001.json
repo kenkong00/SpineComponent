@@ -1,0 +1,125 @@
+{ "skeleton": { "images": "H:/【work】/浅浅的游戏UI界面设计原型/spine/psd/pet0001/images/" },
+"PhotoshopToSpine": { "scale": 1, "padding": 1, "trim": true },
+"bones": [
+	{ "name": "root" }
+],
+"slots": [
+	{ "name": "tail", "bone": "root", "attachment": "tail" },
+	{ "name": "leg_front_L_up", "bone": "root", "attachment": "leg_front_L_up" },
+	{ "name": "leg_front_L_down", "bone": "root", "attachment": "leg_front_L_down" },
+	{ "name": "leg_back_L_down", "bone": "root", "attachment": "leg_back_L_down" },
+	{ "name": "leg_back_L_up", "bone": "root", "attachment": "leg_back_L_up" },
+	{ "name": "body", "bone": "root", "attachment": "body" },
+	{ "name": "leg_front_R_up", "bone": "root", "attachment": "leg_front_R_up" },
+	{ "name": "leg_front_R_Down", "bone": "root", "attachment": "leg_front_R_Down" },
+	{ "name": "leg_back_R_up", "bone": "root", "attachment": "leg_back_R_up" },
+	{ "name": "leg_back_R_down", "bone": "root", "attachment": "leg_back_R_down" },
+	{ "name": "hangtag", "bone": "root", "attachment": "hangtag" },
+	{ "name": "collar", "bone": "root", "attachment": "collar" },
+	{ "name": "ear_L", "bone": "root", "attachment": "ear_L" },
+	{ "name": "headFace", "bone": "root", "attachment": "headFace" },
+	{ "name": "ahoge", "bone": "root", "attachment": "ahoge" },
+	{ "name": "ear_R", "bone": "root", "attachment": "ear_R" },
+	{ "name": "eyebrow_L", "bone": "root", "attachment": "eyebrow_L" },
+	{ "name": "eyebrow_R", "bone": "root", "attachment": "eyebrow_R" },
+	{ "name": "mouth_1", "bone": "root", "attachment": "mouth_1" },
+	{ "name": "mouth_3", "bone": "root" },
+	{ "name": "mouth_2", "bone": "root" },
+	{ "name": "eye_R_1", "bone": "root" },
+	{ "name": "eye_R_3", "bone": "root", "attachment": "eye_R_3" },
+	{ "name": "eye_L_3", "bone": "root", "attachment": "eye_L_3" },
+	{ "name": "eye_R_2", "bone": "root" },
+	{ "name": "eye_L_1", "bone": "root" },
+	{ "name": "eye_L_2", "bone": "root" },
+	{ "name": "nose", "bone": "root", "attachment": "nose" }
+],
+"skins": {
+	"default": {
+		"tail": {
+			"tail": { "x": -153, "y": 181, "width": 170, "height": 198 }
+		},
+		"leg_front_L_up": {
+			"leg_front_L_up": { "x": 42.5, "y": 84, "width": 51, "height": 58 }
+		},
+		"leg_front_L_down": {
+			"leg_front_L_down": { "x": 47.5, "y": 43.5, "width": 55, "height": 75 }
+		},
+		"leg_back_L_down": {
+			"leg_back_L_down": { "x": -41.5, "y": 44, "width": 69, "height": 70 }
+		},
+		"leg_back_L_up": {
+			"leg_back_L_up": { "x": -32.5, "y": 83, "width": 51, "height": 58 }
+		},
+		"body": {
+			"body": { "x": -22, "y": 90, "width": 270, "height": 178 }
+		},
+		"leg_front_R_up": {
+			"leg_front_R_up": { "x": 2.5, "y": 79, "width": 55, "height": 64 }
+		},
+		"leg_front_R_Down": {
+			"leg_front_R_Down": { "x": 2, "y": 35.5, "width": 50, "height": 73 }
+		},
+		"leg_back_R_up": {
+			"leg_back_R_up": { "x": -79.5, "y": 89.5, "width": 69, "height": 71 }
+		},
+		"leg_back_R_down": {
+			"leg_back_R_down": { "x": -92.5, "y": 44.5, "width": 71, "height": 87 }
+		},
+		"hangtag": {
+			"hangtag": { "x": 60.5, "y": 120, "width": 37, "height": 38 }
+		},
+		"collar": {
+			"collar": { "x": 34.5, "y": 151.5, "width": 95, "height": 41 }
+		},
+		"ear_L": {
+			"ear_L": { "x": 85, "y": 287.5, "width": 72, "height": 101 }
+		},
+		"headFace": {
+			"headFace": { "x": 43, "y": 224, "width": 188, "height": 148 }
+		},
+		"ahoge": {
+			"ahoge": { "x": 57, "y": 288, "width": 44, "height": 28 }
+		},
+		"ear_R": {
+			"ear_R": { "x": -2.5, "y": 277, "width": 79, "height": 106 }
+		},
+		"eyebrow_L": {
+			"eyebrow_L": { "x": 88, "y": 236.5, "width": 14, "height": 15 }
+		},
+		"eyebrow_R": {
+			"eyebrow_R": { "x": 53, "y": 236.5, "width": 18, "height": 17 }
+		},
+		"mouth_1": {
+			"mouth_1": { "x": 76, "y": 181.5, "width": 40, "height": 13 }
+		},
+		"mouth_3": {
+			"mouth_3": { "x": 78.5, "y": 179, "width": 27, "height": 14 }
+		},
+		"mouth_2": {
+			"mouth_2": { "x": 82.5, "y": 179.5, "width": 27, "height": 13 }
+		},
+		"eye_R_1": {
+			"eye_R_1": { "x": 36, "y": 208.5, "width": 40, "height": 39 }
+		},
+		"eye_R_3": {
+			"eye_R_3": { "x": 38.5, "y": 203.5, "width": 45, "height": 29 }
+		},
+		"eye_L_3": {
+			"eye_L_3": { "x": 99.5, "y": 205.5, "width": 33, "height": 25 }
+		},
+		"eye_R_2": {
+			"eye_R_2": { "x": 36, "y": 209, "width": 44, "height": 18 }
+		},
+		"eye_L_1": {
+			"eye_L_1": { "x": 99, "y": 209, "width": 24, "height": 38 }
+		},
+		"eye_L_2": {
+			"eye_L_2": { "x": 101.5, "y": 207, "width": 27, "height": 16 }
+		},
+		"nose": {
+			"nose": { "x": 84.5, "y": 194, "width": 19, "height": 14 }
+		}
+	}
+},
+"animations": { "animation": {} }
+}

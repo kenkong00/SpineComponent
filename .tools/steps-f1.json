@@ -1,0 +1,8 @@
+[
+  { "wait": 2200 },
+  { "click": "[data-tab=\"about\"]" },
+  { "wait": 700 },
+  { "eval": "(()=>{ const out=[]; document.querySelectorAll('*').forEach(e=>{ const s=getComputedStyle(e); if((s.overflowY==='hidden'||s.overflow==='hidden') && e.scrollHeight>e.clientHeight+4 && e.clientHeight>0) out.push((e.id?'#'+e.id:e.className)); }); return out.length? 'CLIP: '+out.slice(0,5).join(',') : 'no-clip'; })()" },
+  { "eval": "(()=>{ const b=document.getElementById('btnAiStop'); const hs=[...document.querySelectorAll('#tab-about h3')].map(h=>h.textContent); return 'stopBtn='+(b?'Y':'N')+' | '+hs.join(' | '); })()" },
+  { "shot": "final-about.png" }
+]

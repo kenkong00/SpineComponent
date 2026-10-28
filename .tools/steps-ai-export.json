@@ -1,0 +1,11 @@
+[
+  { "wait": 1500 },
+  { "click": "[data-tab=\"cutter\"]" },
+  { "wait": 600 },
+  { "eval": "(async()=>{\n  const blob = await fetch('/tmp_ai_test.png?v=3').then(r=>r.blob());\n  const dataUrl = await new Promise(res=>{const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.readAsDataURL(blob);});\n  window.Cutter.loadFromDataURL(dataUrl, 'ai_test');\n  await new Promise(r=>setTimeout(r,1800));\n  document.getElementById('cutAiPlan').value='body';\n  document.getElementById('cutAiRun').click();\n  return 'AI 已点击';\n})()" },
+  { "wait": 20000 },
+  { "eval": "'AI: '+document.getElementById('cutAiNote').textContent" },
+  { "eval": "(async()=>{\n  document.getElementById('cutCharId').value='zz_ai_demo';\n  document.getElementById('cutExport').click();\n  await new Promise(r=>setTimeout(r,3000));\n  return '导出: '+document.getElementById('cutExportNote').textContent;\n})()" },
+  { "eval": "fetch('/api/character/zz_ai_demo').then(r=>r.json()).then(d=>{ const miss=d.parts.filter(p=>!p.hasImage); return '装配台解析: parts='+d.parts.length+' active='+d.parts.filter(p=>p.active).length+' 缺图='+miss.length+' bbox='+d.bbox.width+'x'+d.bbox.height; })" },
+  { "shot": "ai-e2e-export.png" }
+]

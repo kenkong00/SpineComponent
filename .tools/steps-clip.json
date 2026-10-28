@@ -1,0 +1,9 @@
+[
+  { "wait": 2000 },
+  { "click": "[data-tab=\"cutter\"]" },
+  { "wait": 800 },
+  { "eval": "(()=>{\n  const out=[];\n  // 1) 找所有 overflow:hidden 且内容溢出的容器\n  document.querySelectorAll('*').forEach(e=>{\n    const s=getComputedStyle(e);\n    if((s.overflowY==='hidden'||s.overflow==='hidden') && e.scrollHeight>e.clientHeight+4 && e.clientHeight>0){\n      out.push('CLIP: '+(e.id?'#'+e.id:'.'+(e.className||'').toString().split(' ')[0])+' clientH='+e.clientHeight+' scrollH='+e.scrollHeight+' ovf='+s.overflowY);\n    }\n  });\n  return out.slice(0,12).join('\\n  ') || 'no-clip';\n})()" },
+  { "eval": "(()=>{\n  // 2) 工具箱区域实测位置\n  const ids=['cutTools','cutParams','cutList','cutCanvas','cutStage'];\n  return ids.map(i=>{const e=document.getElementById(i); if(!e) return i+'=MISSING';\n    const r=e.getBoundingClientRect(); return i+' top='+Math.round(r.top)+' bottom='+Math.round(r.bottom)+' h='+Math.round(r.height)+' scrollH='+e.scrollHeight+' clientH='+e.clientHeight;}).join('\\n  ');\n})()" },
+  { "eval": "(()=>{\n  const e=document.querySelector('.side') || document.querySelector('aside');\n  if(!e) return 'no side';\n  const s=getComputedStyle(e);\n  return 'side: display='+s.display+' ovf='+s.overflowY+' h='+Math.round(e.getBoundingClientRect().height)+' scrollH='+e.scrollHeight+' clientH='+e.clientHeight;\n})()" },
+  { "shot": "clip-01.png" }
+]

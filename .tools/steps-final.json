@@ -1,0 +1,15 @@
+[
+  { "wait": 2200 },
+  { "eval": "fetch('/api/ai/health').then(r=>r.json()).then(h=>'AI health: '+h.status+' ('+h.device+')')" },
+  { "click": "[data-tab=\"about\"]" },
+  { "wait": 700 },
+  { "eval": "(()=>{ const b=document.getElementById('btnAiStop'); return '停止按钮: '+(b?'存在✅':'缺失❌'); })()" },
+  { "eval": "(()=>{ const out=[]; document.querySelectorAll('*').forEach(e=>{ const s=getComputedStyle(e); if((s.overflowY==='hidden'||s.overflow==='hidden') && e.scrollHeight>e.clientHeight+4 && e.clientHeight>0) out.push((e.id?'#'+e.id:e.className)); }); return out.length? '仍有裁剪: '+out.slice(0,5).join(',') : '全页面无裁剪✅'; })()" },
+  { "eval": "(()=>{ const hs=[...document.querySelectorAll('#tab-about h3')].map(h=>h.textContent); return '说明页章节: '+hs.join(' | '); })()" },
+  { "shot": "final-about.png" },
+  { "click": "[data-tab=\"cutter\"]" },
+  { "wait": 800 },
+  { "eval": "(()=>{ const ids=['cutAiPlan','cutAiCustom','cutAiThr','cutAiRun','cutAiNote']; const miss=ids.filter(i=>!document.getElementById(i)); const tools=document.getElementById('cutTools'); const r=tools.getBoundingClientRect(); const foot=document.getElementById('cutExport'); const rf=foot?foot.getBoundingClientRect():null; return 'AI 控件缺失='+(miss.length?miss.join(','):'无')+' | 工具箱网格='+Math.round(r.width)+'x'+Math.round(r.height)+' | 导出区块bottom='+Math.round(rf.bottom)+' (视口1000)'; })()" },
+  { "eval": "(async()=>{ const el=document.getElementById('cutExport'); el.scrollIntoView(); await new Promise(r=>setTimeout(r,300)); const r=el.getBoundingClientRect(); return '导出按钮滚动后可见: top='+Math.round(r.top)+' bottom='+Math.round(r.bottom)+' 视口内='+(r.top>=0&&r.bottom<=window.innerHeight); })()" },
+  { "shot": "final-cutter.png" }
+]

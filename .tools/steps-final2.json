@@ -1,0 +1,14 @@
+[
+  { "wait": 2000 },
+  { "click": "[data-tab=\"cutter\"]" },
+  { "wait": 600 },
+  { "eval": "(()=>{ window.__e=0; window.addEventListener('error',()=>window.__e++); return '空状态: 部件='+CutterEngine.orderedParts().length+' 提示='+document.getElementById('cutNote').textContent; })()" },
+  { "eval": "(()=>{ document.getElementById('cutRun').click(); document.getElementById('cutExport').click(); document.getElementById('cutSortY').click(); return '空状态点按钮后 errors='+(window.__e||0)+' 提示='+document.getElementById('cutNote').textContent; })()" },
+  { "eval": "(()=>{ document.getElementById('cutStrategy').value='grid'; document.getElementById('cutStrategy').dispatchEvent(new Event('change')); return '切到网格策略: 参数控件='+document.querySelectorAll('#cutParams .rng').length+' 个(id='+[...document.querySelectorAll('#cutParams .rng')].map(r=>r.id).join(',')+')'; })()" },
+  { "eval": "(()=>{ document.getElementById('cutStrategy').value='bgcolor'; document.getElementById('cutStrategy').dispatchEvent(new Event('change')); return '切到背景色策略: 参数='+[...document.querySelectorAll('#cutParams .rng')].map(r=>r.id).join(','); })()" },
+  { "shot": "cutter-00-empty.png" },
+  { "click": "[data-tab=\"about\"]" },
+  { "wait": 600 },
+  { "eval": "(()=>{ const t=document.querySelectorAll('#tab-about .abt-tbl'); return '说明页表格组数='+t.length+' 行数='+[...t].map(x=>x.querySelectorAll('tr').length).join('/')+' 标题='+[...document.querySelectorAll('#tab-about h3')].map(h=>h.textContent).join(' | '); })()" },
+  { "shot": "cutter-04-about.png" }
+]

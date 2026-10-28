@@ -1,0 +1,14 @@
+[
+  { "wait": 2600 },
+  { "click": ".tabbtn[data-tab=\"skin\"]" },
+  { "wait": 2800 },
+  { "eval": "new Promise(r=>{const sel=document.querySelector('#skCanvas .part.sel');const cs=sel?getComputedStyle(sel):null;const sd=document.getElementById('skModel');const cd=sd?getComputedStyle(sd):null;const row=document.querySelector('.sk-row.sel');const cr=row?getComputedStyle(row):null;r(JSON.stringify({partSel:cs?{bg:cs.backgroundColor,padding:cs.padding,border:cs.borderWidth+' '+cs.borderStyle,radius:cs.borderRadius,outline:cs.outline}:null,selectSel:cd?{bg:cd.backgroundColor,padding:cd.padding,border:cd.borderWidth+' '+cd.borderStyle,radius:cd.borderRadius}:null,skRowSel:cr?{bg:cr.backgroundColor,padding:cr.padding,border:cr.borderWidth+' '+cr.borderStyle}:null},null,1));})" },
+  { "shot": "fix-01-skin.png" },
+  { "click": ".tabbtn[data-tab=\"compose\"]" },
+  { "wait": 1800 },
+  { "eval": "new Promise(r=>{const p=document.querySelector('#canvas .part');if(!p){r('no part');return;}const cs=getComputedStyle(p);const lyr=[...document.querySelectorAll('#layers .lyr')].map(e=>({cls:e.className,h:Math.round(e.getBoundingClientRect().height)}));r(JSON.stringify({part:{bg:cs.backgroundColor,padding:cs.padding,border:cs.borderWidth+' '+cs.borderStyle},lyrHeights:lyr.slice(0,4)},null,1));})" },
+  { "click": "#layers .lyr:nth-child(4)" },
+  { "wait": 700 },
+  { "eval": "new Promise(r=>{const p=document.querySelector('#canvas .part.sel');const cs=p?getComputedStyle(p):null;const l=document.querySelector('#layers .lyr.sel');const cl=l?getComputedStyle(l):null;r(JSON.stringify({selPart:cs?{idx:p.dataset.i,bg:cs.backgroundColor,padding:cs.padding,border:cs.borderWidth+' '+cs.borderStyle,outline:cs.outline}:null,selLyr:cl?{h:Math.round(l.getBoundingClientRect().height),bg:cl.backgroundColor,padding:cl.padding,border:cl.borderWidth+' '+cl.borderStyle}:null},null,1));})" },
+  { "shot": "fix-02-compose.png" }
+]

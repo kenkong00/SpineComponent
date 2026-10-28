@@ -1,0 +1,10 @@
+[
+  { "wait": 2500 },
+  { "eval": "JSON.stringify({App:typeof App, API:typeof API, Compose:typeof Compose, R:typeof R, Parts:typeof Parts, Anim:typeof Anim, spine:typeof spine})" },
+  { "eval": "fetch('/api/characters').then(r=>r.status+' '+r.statusText).catch(e=>'FETCHERR '+e.message)" },
+  { "eval": "fetch('/api/characters').then(r=>r.text()).then(t=>t.slice(0,300)).catch(e=>'ERR '+e.message)" },
+  { "eval": "fetch('/public/js/app.js').then(r=>r.status+' len='+r.headers.get('content-length')).catch(e=>'ERR '+e.message)" },
+  { "eval": "document.getElementById('charSel').outerHTML" },
+  { "eval": "JSON.stringify([...document.scripts].map(s=>s.src))" },
+  { "eval": "(()=>{try{ return 'boot?'; }catch(e){ return 'E:'+e.message; }})()" }
+]

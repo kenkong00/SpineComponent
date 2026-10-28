@@ -1,0 +1,41 @@
+{ "skeleton": { "images": "H:/【work】/浅浅的游戏UI界面设计原型/spine/psd/j0000/images/" },
+"PhotoshopToSpine": { "scale": 1, "padding": 1, "trim": true },
+"bones": [
+	{ "name": "root" }
+],
+"slots": [
+	{ "name": "1", "bone": "root", "attachment": "1" },
+	{ "name": "2", "bone": "root", "attachment": "2" },
+	{ "name": "3", "bone": "root", "attachment": "3" },
+	{ "name": "4", "bone": "root", "attachment": "4" },
+	{ "name": "5", "bone": "root", "attachment": "5" },
+	{ "name": "6", "bone": "root", "attachment": "6" },
+	{ "name": "7", "bone": "root", "attachment": "7" }
+],
+"skins": {
+	"default": {
+		"1": {
+			"1": { "x": 253.5, "y": -256, "width": 277, "height": 482 }
+		},
+		"2": {
+			"2": { "x": 253.5, "y": -256, "width": 247, "height": 486 }
+		},
+		"3": {
+			"3": { "x": 254, "y": -255.5, "width": 244, "height": 485 }
+		},
+		"4": {
+			"4": { "x": 268.5, "y": -256, "width": 245, "height": 508 }
+		},
+		"5": {
+			"5": { "x": 268, "y": -255, "width": 216, "height": 486 }
+		},
+		"6": {
+			"6": { "x": 253.5, "y": -256, "width": 261, "height": 486 }
+		},
+		"7": {
+			"7": { "x": 255.5, "y": -261, "width": 271, "height": 494 }
+		}
+	}
+},
+"animations": { "animation": {} }
+}

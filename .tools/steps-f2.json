@@ -1,0 +1,8 @@
+[
+  { "wait": 2000 },
+  { "click": "[data-tab=\"cutter\"]" },
+  { "wait": 800 },
+  { "eval": "(()=>{ const ids=['cutAiPlan','cutAiCustom','cutAiThr','cutAiRun','cutAiNote']; const miss=ids.filter(i=>!document.getElementById(i)); const ex=document.getElementById('cutExport'); ex.scrollIntoView(); return 'AI控件缺失='+(miss.length?miss.join(','):'无'); })()" },
+  { "wait": 500 },
+  { "shot": "final-cutter.png" }
+]

@@ -1,0 +1,21 @@
+[
+  { "wait": 3500 },
+  { "eval": "document.title" },
+  { "eval": "JSON.stringify({chars:[...document.querySelectorAll('#charSel option')].map(o=>o.value), cur:document.getElementById('charSel').value, layers:document.querySelectorAll('.lyr').length, parts:document.querySelectorAll('#canvas .part').length, cbW:document.getElementById('canvas').style.width, cbH:document.getElementById('canvas').style.height, badge:document.getElementById('partBadge').textContent})" },
+  { "shot": "01-compose-j0000.png" },
+  { "eval": "(()=>{const e=document.getElementById('charSel'); e.value='j0001'; e.dispatchEvent(new Event('change')); return 'switched';})()" },
+  { "wait": 2500 },
+  { "eval": "JSON.stringify({cur:document.getElementById('charSel').value, parts:document.querySelectorAll('#canvas .part').length, badge:document.getElementById('partBadge').textContent, info:document.getElementById('stageInfo').textContent})" },
+  { "shot": "02-compose-j0001.png" },
+  { "eval": "(()=>{const e=document.getElementById('charSel'); e.value='j0003'; e.dispatchEvent(new Event('change')); return 'ok';})()" },
+  { "wait": 2500 },
+  { "eval": "JSON.stringify({parts:document.querySelectorAll('#canvas .part').length, badge:document.getElementById('partBadge').textContent, variants:[...document.querySelectorAll('.tagv')].length})" },
+  { "shot": "03-compose-j0003.png" },
+  { "eval": "(()=>{const e=document.getElementById('charSel'); e.value='pet0001'; e.dispatchEvent(new Event('change')); return 'ok';})()" },
+  { "wait": 2500 },
+  { "shot": "04-compose-pet0001.png" },
+  { "eval": "(()=>{const e=document.getElementById('charSel'); e.value='pet0002'; e.dispatchEvent(new Event('change')); return 'ok';})()" },
+  { "wait": 2500 },
+  { "shot": "05-compose-pet0002.png" },
+  { "eval": "JSON.stringify({errs:window.__errs||[], parts:document.querySelectorAll('#canvas .part').length})" }
+]

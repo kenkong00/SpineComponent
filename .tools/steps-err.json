@@ -1,0 +1,7 @@
+[
+  { "wait": 2000 },
+  { "eval": "fetch('/spine/j0003/export%2064x128/j0003.json').then(r=>r.text()).then(t=>'status ok, len='+t.length+', parse='+(JSON.parse(t).skeleton.spine)).catch(e=>'ERR '+e.message)" },
+  { "eval": "fetch('/spine/j0003/export%2064x128/j0003.atlas').then(r=>r.text()).then(t=>'atlas len='+t.length+' firstLine=['+t.split(/\\r?\\n/)[0]+'] secondLine=['+t.split(/\\r?\\n/)[1]+'] hasBody='+t.includes('body')).catch(e=>'ERR '+e.message)" },
+  { "eval": "new Promise(res=>{ const am=new spine.AssetManager(''); const J='/spine/j0003/export%2064x128/j0003.json', A='/spine/j0003/export%2064x128/j0003.atlas'; am.loadText(J); am.loadTextureAtlas(A); am.loadAll(()=>{ const out={}; out.hasErrors=am.hasErrors(); out.errors=am.getErrors?am.getErrors():null; out.atlasType=typeof am.get(A); out.jsonType=typeof am.get(J); try{ const atlas=am.get(A); const sj=new spine.SkeletonJson(new spine.AtlasAttachmentLoader(atlas)); const d=sj.readSkeletonData(am.get(J)); out.ok=true; out.anims=d.animations.length; out.skins=d.skins.length; }catch(e){ out.ok=false; out.msg=(e&&e.message)||String(e); out.stack=String(e&&e.stack).slice(0,400); } res(JSON.stringify(out)); }); })" },
+  { "eval": "JSON.stringify({atlasCls:typeof spine.TextureAtlas, ajl:typeof spine.AtlasAttachmentLoader, sj:typeof spine.SkeletonJson})" }
+]

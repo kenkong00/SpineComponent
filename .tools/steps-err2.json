@@ -1,0 +1,7 @@
+[
+  { "wait": 2000 },
+  { "eval": "(()=>{ window.__dbg='running'; const am=new spine.AssetManager(''); const J='/spine/j0003/export%2064x128/j0003.json', A='/spine/j0003/export%2064x128/j0003.atlas'; am.loadText(J); am.loadTextureAtlas(A); am.loadAll(()=>{ const out={}; try{ out.hasErrors=am.hasErrors(); out.atlasType=typeof am.get(A); out.jsonType=typeof am.get(J); const atlas=am.get(A); const sj=new spine.SkeletonJson(new spine.AtlasAttachmentLoader(atlas)); const d=sj.readSkeletonData(am.get(J)); out.ok=true; out.anims=d.animations.length; out.skins=d.skins.length; }catch(e){ out.ok=false; out.msg=(e&&e.message)||String(e); out.stack=String(e&&e.stack).slice(0,500); } window.__dbg=JSON.stringify(out); }); return 'started'; })()" },
+  { "wait": 4000 },
+  { "eval": "window.__dbg" },
+  { "eval": "(function(){ try{ window.__dbg2 = (function(){ const atlas = new spine.TextureAtlas(document.querySelector('x')?'' :'', function(){return null}); return 'x'; })(); }catch(e){ return 'atlasCtorErr: '+e.message; } return window.__dbg2; })()" }
+]

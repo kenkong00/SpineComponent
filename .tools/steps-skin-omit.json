@@ -1,0 +1,23 @@
+[
+  { "wait": 3000 },
+  { "click": ".tabbtn[data-tab=\"skin\"]" },
+  { "wait": 2500 },
+  { "click": ".sk-row[data-slot=\"head\"] .sk-cell[data-skin=\"03\"]" },
+  { "click": ".sk-row[data-slot=\"hair\"] .sk-cell[data-skin=\"02\"]" },
+  { "click": ".sk-row[data-slot=\"body\"] .sk-cell[data-skin=\"03\"]" },
+  { "click": ".sk-row[data-slot=\"hand_left\"] .sk-cell[data-skin=\"02\"]" },
+  { "click": ".sk-row[data-slot=\"foot_right\"] .sk-cell[data-skin=\"03\"]" },
+  { "wait": 1200 },
+  { "eval": "JSON.stringify({ badge: document.getElementById('skBadge').textContent, head: Skin.S.choice.head, stat: document.getElementById('skStat').textContent })" },
+  { "shot": "skin-08-mix5.png" },
+  { "click": ".sk-row[data-slot=\"head\"] .sk-slot .nm" },
+  { "wait": 600 },
+  { "eval": "JSON.stringify({ badge: document.getElementById('skBadge').textContent, opts: [...document.querySelectorAll('#skDetail .sk-opt')].map(o=>o.dataset.skin) })" },
+  { "eval": "(()=>{ const o=[...document.querySelectorAll('#skDetail .sk-opt')].find(e=>e.dataset.skin===''); o.click(); return 'omit-clicked'; })()" },
+  { "wait": 1000 },
+  { "eval": "JSON.stringify({ head: Skin.S.choice.head, headParts: Skin.S.parts.filter(p=>p.slot==='head').length, stat: document.getElementById('skStat').textContent })" },
+  { "click": ".sk-row[data-slot=\"head\"] .sk-cell[data-skin=\"02\"]" },
+  { "wait": 900 },
+  { "eval": "JSON.stringify({ head: Skin.S.choice.head, headParts: Skin.S.parts.filter(p=>p.slot==='head').length, stat: document.getElementById('skStat').textContent })" },
+  { "shot": "skin-09-final.png" }
+]

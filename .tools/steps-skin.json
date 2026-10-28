@@ -1,0 +1,23 @@
+[
+  { "wait": 3500 },
+  { "eval": "JSON.stringify({ tabs: Array.from(document.querySelectorAll('.tabbtn')).map(b=>b.dataset.tab), modelOpts: Array.from(document.querySelectorAll('#skModel option')).map(o=>o.value) })" },
+  { "click": ".tabbtn[data-tab=\"skin\"]" },
+  { "wait": 3000 },
+  { "eval": "JSON.stringify({ note: document.getElementById('skNote').textContent.slice(0,80), cover: document.getElementById('skCover').textContent, rows: document.querySelectorAll('#skMatrix .sk-row').length, cells: document.querySelectorAll('#skMatrix .sk-cell').length, parts: document.querySelectorAll('#skCanvas .part').length, imgs: document.querySelectorAll('#skCanvas .part img').length, stat: document.getElementById('skStat').textContent })" },
+  { "shot": "skin-01-initial.png" },
+  { "eval": "(() => { const c=document.querySelector('#skCanvas .part img'); return c? c.src : 'none'; })()" },
+  { "click": ".sk-row[data-slot=\"head\"] .sk-cell[data-skin=\"02\"]" },
+  { "click": ".sk-row[data-slot=\"hair\"] .sk-cell[data-skin=\"03\"]" },
+  { "click": ".sk-row[data-slot=\"body\"] .sk-cell[data-skin=\"02\"]" },
+  { "wait": 1200 },
+  { "eval": "JSON.stringify({ choice: Skin.S.choice, shown: Skin.S.parts.filter(p=>p.visible).length, stat: document.getElementById('skStat').textContent, selBadge: document.getElementById('skBadge').textContent })" },
+  { "eval": "JSON.stringify(Array.from(document.querySelectorAll('#skCanvas .part')).map(e=>{const p=Skin.S.parts[+e.dataset.i];return p.slot+':'+p.skin;}))" },
+  { "shot": "skin-02-mixed.png" },
+  { "click": "#skRandom" },
+  { "wait": 900 },
+  { "eval": "JSON.stringify({ stat: document.getElementById('skStat').textContent, choice: Skin.S.choice })" },
+  { "shot": "skin-03-random.png" },
+  { "click": "#skReset" },
+  { "wait": 900 },
+  { "eval": "(() => { const bad=[]; document.querySelectorAll('*').forEach(el=>{ if(el.scrollHeight>el.clientHeight+4 && getComputedStyle(el).overflowY==='hidden') bad.push((el.id||el.className||el.tagName)+' '+el.clientHeight+'<'+el.scrollHeight); }); return JSON.stringify({ clipped: bad.slice(0,10), sw: document.documentElement.scrollWidth, vw: window.innerWidth }); })()" }
+]

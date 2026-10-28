@@ -1,0 +1,77 @@
+{ "skeleton": { "images": "H:/【work】/浅浅的游戏UI界面设计原型/spine/psd/pet0002/images/" },
+"PhotoshopToSpine": { "scale": 1, "padding": 1, "trim": true },
+"bones": [
+	{ "name": "root" }
+],
+"slots": [
+	{ "name": "body", "bone": "root", "attachment": "body" },
+	{ "name": "face", "bone": "root", "attachment": "face" },
+	{ "name": "leaf_2", "bone": "root", "attachment": "leaf_2" },
+	{ "name": "leaf_1", "bone": "root", "attachment": "leaf_1" },
+	{ "name": "leaf_3", "bone": "root", "attachment": "leaf_3" },
+	{ "name": "foot", "bone": "root", "attachment": "foot" },
+	{ "name": "flower", "bone": "root", "attachment": "flower" },
+	{ "name": "mouth", "bone": "root", "attachment": "mouth" },
+	{ "name": "eye_R", "bone": "root", "attachment": "eye_R" },
+	{ "name": "eye_L", "bone": "root", "attachment": "eye_L" },
+	{ "name": "tentacle_5", "bone": "root", "attachment": "tentacle_5" },
+	{ "name": "tentacle_4", "bone": "root", "attachment": "tentacle_4" },
+	{ "name": "tentacle_3", "bone": "root", "attachment": "tentacle_3" },
+	{ "name": "tentacle_2", "bone": "root", "attachment": "tentacle_2" },
+	{ "name": "tentacle_1", "bone": "root", "attachment": "tentacle_1" },
+	{ "name": "tentacle_6", "bone": "root", "attachment": "tentacle_6" }
+],
+"skins": {
+	"default": {
+		"body": {
+			"body": { "x": 15.5, "y": 138, "width": 299, "height": 274 }
+		},
+		"face": {
+			"face": { "x": 23.5, "y": 145.5, "width": 203, "height": 163 }
+		},
+		"leaf_2": {
+			"leaf_2": { "x": -7.5, "y": 300, "width": 39, "height": 34 }
+		},
+		"leaf_1": {
+			"leaf_1": { "x": -92, "y": 260.5, "width": 32, "height": 25 }
+		},
+		"leaf_3": {
+			"leaf_3": { "x": 127.5, "y": 260.5, "width": 29, "height": 29 }
+		},
+		"foot": {
+			"foot": { "x": 48, "y": 19, "width": 254, "height": 46 }
+		},
+		"flower": {
+			"flower": { "x": -35.5, "y": 209, "width": 21, "height": 24 }
+		},
+		"mouth": {
+			"mouth": { "x": 45, "y": 134.5, "width": 24, "height": 9 }
+		},
+		"eye_R": {
+			"eye_R": { "x": 10, "y": 147.5, "width": 20, "height": 23 }
+		},
+		"eye_L": {
+			"eye_L": { "x": 77, "y": 147.5, "width": 20, "height": 23 }
+		},
+		"tentacle_5": {
+			"tentacle_5": { "x": -166.5, "y": 184, "width": 63, "height": 142 }
+		},
+		"tentacle_4": {
+			"tentacle_4": { "x": -35.5, "y": 341.5, "width": 289, "height": 79 }
+		},
+		"tentacle_3": {
+			"tentacle_3": { "x": -42, "y": 77.5, "width": 148, "height": 123 }
+		},
+		"tentacle_2": {
+			"tentacle_2": { "x": 153, "y": 321.5, "width": 172, "height": 61 }
+		},
+		"tentacle_1": {
+			"tentacle_1": { "x": -57, "y": 396, "width": 306, "height": 34 }
+		},
+		"tentacle_6": {
+			"tentacle_6": { "x": -227, "y": 179.5, "width": 38, "height": 173 }
+		}
+	}
+},
+"animations": { "animation": {} }
+}

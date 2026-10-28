@@ -1,0 +1,16 @@
+[
+  { "wait": 3200 },
+  { "eval": "document.getElementById('skNote').textContent.slice(0,120)" },
+  { "eval": "Sk.about = !!document.querySelector('#tab-about h3'); JSON.stringify({ hasSkinAbout: !!Array.from(document.querySelectorAll('#tab-about h3')).find(h=>h.textContent.includes('切换演示')), tabBtnText: document.querySelector('.tabbtn[data-tab=\"skin\"]').textContent })" },
+  { "click": ".tabbtn[data-tab=\"skin\"]" },
+  { "wait": 2500 },
+  { "click": ".sk-row[data-slot=\"head\"] .sk-cell[data-skin=\"03\"]" },
+  { "click": ".sk-row[data-slot=\"hair\"] .sk-cell[data-skin=\"02\"]" },
+  { "click": ".sk-row[data-slot=\"body\"] .sk-cell[data-skin=\"03\"]" },
+  { "click": ".sk-row[data-slot=\"arm_left_Up\"] .sk-cell[data-skin=\"02\"]" },
+  { "click": ".sk-row[data-slot=\"leg_right_UP\"] .sk-cell[data-skin=\"03\"]" },
+  { "click": ".sk-row[data-slot=\"foot_left\"] .sk-cell[data-skin=\"02\"]" },
+  { "wait": 1500 },
+  { "eval": "JSON.stringify({ stat: document.getElementById('skStat').textContent, shown: Skin.S.parts.filter(p=>p.visible).length, imgsLoaded: Array.from(document.querySelectorAll('#skCanvas .part img')).filter(i=>i.naturalWidth>0).length })" },
+  { "shot": "skin-final-mix.png" }
+]

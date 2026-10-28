@@ -1,0 +1,5 @@
+[
+  { "wait": 2500 },
+  { "eval": "new Promise(async r => { const out={}; for (const sn of ['01','02','03']) { out[sn]={}; for (const part of ['head','hair','body']) { const im=new Image(); im.crossOrigin='anonymous'; im.src='/spine/%5Bskin%5Dj0000/%5Bskin%5Dimages/'+sn+'/'+part+'.png'; await new Promise(z=>{im.onload=z;im.onerror=z;}); const c=document.createElement('canvas'); c.width=im.naturalWidth;c.height=im.naturalHeight; const x=c.getContext('2d'); x.drawImage(im,0,0); const d=x.getImageData(0,0,c.width,c.height).data; let r0=0,g0=0,b0=0,a0=0,n=0,opaque=0; for(let i=0;i<d.length;i+=4){ r0+=d[i];g0+=d[i+1];b0+=d[i+2];a0+=d[i+3]; n++; if(d[i+3]>200) opaque++; } out[sn][part]={avg:[Math.round(r0/n),Math.round(g0/n),Math.round(b0/n)],avgA:Math.round(a0/n),opaquePct:Math.round(opaque/n*100),size:[im.naturalWidth,im.naturalHeight]}; } } r(JSON.stringify(out)); })" },
+  { "eval": "JSON.stringify({ headParts: Skin.S.parts.filter(p=>p.slot==='head').map(p=>({skin:p.skin,url:p.imgUrl,nat:[p.natW,p.natH]})) })" }
+]
